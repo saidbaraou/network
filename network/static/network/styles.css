@@ -2,11 +2,3 @@ textarea:focus {
   outline: none !important;
   box-shadow: none !important;
 }
-
-/* Makes the card look slightly lifted when the user hovers over it */
-.card {
-  transition: transform 0.2s ease-in-out;
-}
-.card:hover {
-  transform: translateY(-2px);
-}
