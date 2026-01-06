@@ -1,10 +1,10 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 
-from .models import User
+from .models import User, Post
 
 
 def index(request):
@@ -63,9 +63,17 @@ def register(request):
         return render(request, "network/register.html")
     
     
-def post_view(request, post_id):
+def post_view(request):
     if request.method == "POST":
+
         data = request.POST.get("data")
-        return HttpResponse(f"Received post data: {data}for post ID: {post_id}")
-    else:
-        return HttpResponseRedirect(reverse("index"))
+
+        if data:
+            new_post = Post(
+                author=request.user,
+                data=data
+            )
+            new_post.save()
+            return HttpResponseRedirect(reverse("index"))
+
+    return HttpResponseRedirect(reverse("index"))
