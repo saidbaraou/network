@@ -2,6 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
 from .models import User, Post
@@ -63,6 +64,7 @@ def register(request):
         return render(request, "network/register.html")
     
     
+@login_required    
 def post_view(request):
     if request.method == "POST":
 
@@ -74,6 +76,6 @@ def post_view(request):
                 data=data
             )
             new_post.save()
-            return HttpResponseRedirect(reverse("index"))
+            return redirect(reverse("index"))
 
-    return HttpResponseRedirect(reverse("index"))
+    return redirect(reverse("index"))
