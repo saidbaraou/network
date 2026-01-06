@@ -1,4 +1,7 @@
 {% extends "network/layout.html" %}
+{% load humanize %}
+
+{% block title %}All Posts - Social Network{% endblock %}
 
 {% block body %}
 
@@ -39,7 +42,7 @@
             </h5>
             <p class="card-text">{{ post.content }}</p>
             <p class="card-subtitle text-muted" style="font-size: 0.8rem;">
-                {{ post.timestamp|date:"M d Y, H:i" }}
+                {{ post.timestamp|naturaltime }}
             </p>
         </div>
         <div class="card-footer bg-transparent">
