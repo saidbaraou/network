@@ -9,7 +9,10 @@ from .models import User, Post
 
 
 def index(request):
-    return render(request, "network/index.html")
+    posts = Post.objects.all().order_by("-timestamp")
+    return render(request, "network/index.html", {
+        "posts": posts
+    })
 
 
 def login_view(request):
@@ -63,19 +66,16 @@ def register(request):
     else:
         return render(request, "network/register.html")
     
-    
+
 @login_required    
 def post_view(request):
     if request.method == "POST":
+        content = request.POST.get("content")
 
-        data = request.POST.get("data")
-
-        if data:
+        if content:
             new_post = Post(
                 author=request.user,
-                data=data
+                content=content
             )
             new_post.save()
-            return redirect(reverse("index"))
-
     return redirect(reverse("index"))

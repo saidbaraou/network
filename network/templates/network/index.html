@@ -5,7 +5,7 @@
 <div class="container mt-4 px-2">
     <div class="card shadow-sm border-0 mx-auto style=" max-width: 600px; border-radius: 15px;">
         <div class="card-body p-3 p-md-4">
-            <form action="post_view" method="POST">
+            <form action="{% url 'post_view' %}" method="POST">
                 {% csrf_token %}
 
                 <div class="d-flex align-items-center">
@@ -28,7 +28,28 @@
         </div>
         </form>
     </div>
-</div>
+
+    <h2 class="mt-5">All Posts</h2>
+
+    {% for post in posts %}
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body">
+            <h5 class="card-title">
+                <strong>{{ post.author.username }}</strong>
+            </h5>
+            <p class="card-text">{{ post.content }}</p>
+            <p class="card-subtitle text-muted" style="font-size: 0.8rem;">
+                {{ post.timestamp|date:"M d Y, H:i" }}
+            </p>
+        </div>
+        <div class="card-footer bg-transparent">
+            <button class="btn btn-sm btn-outline-primary">Like</button>
+            <span class="text-muted ml-2">0 likes</span>
+        </div>
+    </div>
+    {% empty %}
+    <p>No posts yet. Be the first to share something!</p>
+    {% endfor %}
 </div>
 
 {% endblock %}
