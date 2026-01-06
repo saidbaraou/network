@@ -61,3 +61,11 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+    
+    
+def post_view(request, post_id):
+    if request.method == "POST":
+        data = request.POST.get("data")
+        return HttpResponse(f"Received post data: {data}for post ID: {post_id}")
+    else:
+        return HttpResponseRedirect(reverse("index"))
