@@ -1,7 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 
@@ -79,3 +79,11 @@ def post_view(request):
             )
             new_post.save()
     return redirect(reverse("index"))
+
+def profile_view(request, username):
+    username = get_object_or_404(User, username=username)
+    posts = Post.objects.filter(author=request.user).order_by("-timestamp")
+    return render(request, "network/profile-page.html", {
+        "username": username,
+        "posts": posts
+    })
