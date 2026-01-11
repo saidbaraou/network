@@ -1,0 +1,39 @@
+{% extends "network/layout.html" %}
+{% load humanize %}
+
+{% block title %}All Posts - Social Network{% endblock %}
+
+{% block body %}
+
+
+
+<div class="container mt-4 px-2">
+
+  {% for post in posts %}
+
+  <h2 class="mt-5">{{ post.author.username }} Posts</h2>
+
+
+  <div class="card mb-3 shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title">
+        <strong>{{ post.author.username }}</strong>
+      </h5>
+      <p class="card-text">{{ post.content }}</p>
+      <p class="card-subtitle text-muted" style="font-size: 0.8rem;">
+        {{ post.timestamp|naturaltime }}
+      </p>
+    </div>
+    <div class="card-footer bg-transparent">
+      <button class="btn btn-sm btn-outline-primary">Like</button>
+      <span class="text-muted ml-2">0 likes</span>
+    </div>
+  </div>
+  {% empty %}
+  <p>No posts yet. Be the first to share something!</p>
+  {% endfor %}
+</div>
+
+</div>
+
+{% endblock %}
