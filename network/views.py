@@ -81,9 +81,9 @@ def post_view(request):
     return redirect(reverse("index"))
 
 def profile_view(request, username):
-    username = get_object_or_404(User, username=username)
+    profile_user = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=request.user).order_by("-timestamp")
     return render(request, "network/profile-page.html", {
-        "username": username,
+        "profile_user": profile_user,
         "posts": posts
     })
