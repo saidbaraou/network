@@ -81,9 +81,18 @@ def post_view(request):
     return redirect(reverse("index"))
 
 def profile_view(request, username):
-    profile_user = get_object_or_404(User, username=username)
+    user_profile = get_object_or_404(User, username=username)
     posts = Post.objects.filter(author=request.user).order_by("-timestamp")
+
+    is_following = False
+    if request.user.is_authenticated:
+        if request.user.following.filter(pk=user_profile.pk).exists():
+            is_following = True
+
     return render(request, "network/profile-page.html", {
-        "profile_user": profile_user,
-        "posts": posts
+        "profile_user": user_profile,
+        "posts": posts,
+        "follower_count": user_profile.followes.count(),
+        "following_count": user_profile.following.count(),
+        "is_following": is_following
     })
