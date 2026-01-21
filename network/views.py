@@ -96,3 +96,15 @@ def profile_view(request, username):
         "following_count": user_profile.following.count(),
         "is_following": is_following
     })
+
+@login_required
+def toggle_follow(request, username):
+    user_to_modify = get_object_or_404(User, username=username)
+
+    if request.user != user_to_modify:
+        if request.user.following.filter(pk=user_to_modify.pk).exists():
+            request.user.following.remove(user_to_modify)
+        else:
+            request.user.following.add(user_to_modify)
+
+    return redirect("profile", username=username)
