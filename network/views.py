@@ -90,7 +90,7 @@ def profile_view(request, username):
             is_following = True
 
     return render(request, "network/profile-page.html", {
-        "profile_user": user_profile,
+        "user_profile": user_profile,
         "posts": posts,
         "follower_count": user_profile.followers.count(),
         "following_count": user_profile.following.count(),
