@@ -10,13 +10,21 @@
 <div class="container mt-4 px-2">
   <div class=" container-fluid d-flex align-items-center justify-content-between mb-4 py-3">
 
-    <h1 class="m_0">{{ profile_user.username }}</h1>
+    <h1 class="m_0">{{ user_profile.username }}</h1>
 
     <div class="align-items-center">
-      <span class="text-muted mr-3"> 0 Followers</span>
-      <span class="text-muted mr-3"> 0 Following</span>
-      {% if profile_user != request.user %}
-      <button class="btn btn-sm btn-outline-primary">Follow</button>
+      <span class="text-muted mr-3"> {{ follower_count }}Followers</span>
+      <span class="text-muted mr-3"> {{ following_count }} Following</span>
+      {% if user.is_authenticated and user_profile != request.user %}
+
+      <form action="{% url 'toggle_follow' user_profile.username %}" method="post">
+        {% csrf_token %}
+        {% if is_following %}
+        <button type="submit" class="btn btn-outline-danger">Unfollow</button>
+        {% else %}
+        <button type="submit" class="btn btn-primary">Follow</button>
+        {% endif %}
+      </form>
       {% endif %}
     </div>
 
