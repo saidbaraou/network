@@ -108,3 +108,13 @@ def toggle_follow(request, username):
             request.user.following.add(user_to_modify)
 
     return redirect("profile", username=username)
+
+@login_required
+def following_view(request):
+    followed_users = request.user.following.all()
+    posts = Post.objects.filter(author__in=followed_users).order_by("-timestamp")
+
+    return render(request, "network/following.html", {
+        "posts": posts
+    })
+
