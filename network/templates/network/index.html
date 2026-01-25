@@ -37,30 +37,37 @@
     {% endif %}
 
     <div class="container-fluid mt-4 px-2">
-        <div class="container mt-4 px-2"></div>
-        <h2 class="mt-5">All Posts</h2>
-        {% for post in posts %}
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-                <h5 class="card-title">
-                    <a class="" href="{% url 'profile' username=post.author.username %}">
-                        <strong>{{post.author.username}}</strong></a>
-                </h5>
-                <p class="card-text">{{ post.content }}</p>
-                <p class="card-subtitle text-muted" style="font-size: 0.8rem;">
-                    {{ post.timestamp|naturaltime }}
-                </p>
+        <div class="container mt-4 px-2">
+            <h2 class="mt-5">All Posts</h2>
+            {% for post in posts %}
+            <div class="card mb-3 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a class="" href="{% url 'profile' username=post.author.username %}">
+                            <strong>{{post.author.username}}</strong></a>
+                    </h5>
+                    <p class="card-text">{{ post.content }}</p>
+
+                </div>
+                <div class="card-footer border-top-0 bg-transparent">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary">Like</button>
+                            <span class="text-muted ml-2">0 likes</span>
+                        </div>
+                        <div>
+                            <span class="card-subtitle text-muted" style="font-size: 0.8rem;">
+                                {{ post.timestamp|naturaltime }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-footer bg-transparent">
-                <button class="btn btn-sm btn-outline-primary">Like</button>
-                <span class="text-muted ml-2">0 likes</span>
-            </div>
+            {% empty %}
+            <p>No posts yet. Be the first to share something!</p>
+            {% endfor %}
         </div>
-        {% empty %}
-        <p>No posts yet. Be the first to share something!</p>
-        {% endfor %}
     </div>
-</div>
 </div>
 
 {% endblock %}
