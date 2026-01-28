@@ -9,6 +9,7 @@ from django.core.paginator import Paginator
 from .models import User, Post
 
 
+
 def index(request):
     posts = Post.objects.all().order_by("-timestamp")
     
