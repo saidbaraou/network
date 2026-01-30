@@ -45,6 +45,7 @@
             {% for post in page_posts %}
             <div class="card mb-3 shadow-sm">
                 <div class="card-body">
+
                     <h5 class="card-title">
                         <a class="" href="{% url 'profile' username=post.author.username %}">
                             <strong>{{post.author.username}}</strong></a>
@@ -59,9 +60,19 @@
                             <span class="text-muted ml-2">0 likes</span>
                         </div>
                         <div>
-                            <span class="card-subtitle text-muted" style="font-size: 0.8rem;">
-                                {{ post.timestamp|naturaltime }}
-                            </span>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <button class="btn btn-sm btn-outline-primary">Edit</button>
+                                    <span class="card-subtitle text-muted" style="font-size: 0.8rem;">
+                                        {{ post.timestamp|naturaltime }}
+                                    </span>
+                                    {% if user == post.author %}
+
+                                    {% endif %}
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
