@@ -25,7 +25,7 @@
                             style="resize: none; font-size: 1.1rem; background: transparent;" required></textarea>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-primary rounded-pill px-4 shadow-sm font-weight-bold">
+                        <button type="submit" class="btn btn-primary rounded-pill px-4 mx-2 shadow-sm font-weight-bold">
                             Post
                         </button>
                     </div>
@@ -84,13 +84,6 @@
                         <span class="page-link">&laquo;</span>
                     </li>
                     {% endif %}
-
-                    <!-- <li class="page-item active" aria-current="page">
-                        <span class="page-link">
-                            Page {{ page_posts.number }} of {{ page_posts.paginator.num_pages }}
-                        </span>
-                        
-                    </li> -->
 
                     {% for num in page_posts.paginator.page_range %}
                     {% if page_posts.number == num %}
