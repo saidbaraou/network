@@ -70,6 +70,8 @@
             <p>No posts yet. Be the first to share something!</p>
             {% endfor %}
 
+            {% if page_posts > 1 %}
+
             <nav aria-label="Page navigation">
                 <ul class="pagination justify-content-center">
 
@@ -114,6 +116,7 @@
 
                 </ul>
             </nav>
+            {% endif %}
 
         </div>
     </div>
