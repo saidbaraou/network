@@ -140,3 +140,18 @@ def edit_post(request, post_id):
             return HttpResponse("Content cannot be empty.", status=400)
     else:
         return HttpResponse("Invalid request method.", status=405)
+    
+@login_required
+def save_post(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        new_content = request.POST.get("content")
+        if new_content:
+            post.content = new_content
+            post.save()
+            return redirect('index')
+        else:
+            return HttpResponse("Content cannot be empty.", status=400)
+    else:
+        return HttpResponse("Invalid request method.", status=405)

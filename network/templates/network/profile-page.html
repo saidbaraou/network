@@ -61,11 +61,8 @@
   <h2 class="mt-5">{{user_profile}} Posts</h2>
 
   {% for post in posts %}
-
-
-  <div class="card mb-3 shadow-sm">
+  <div id="post-container-{{ post.id }}" class="card mb-3 shadow-sm">
     <div class="card-body">
-
       <div class="d-flex justify-content-between align-items-center mb-2">
         <div>
           <h5 class="card-title">
@@ -76,12 +73,16 @@
         <div>
           {% if user == post.author %}
           <a href="{% url 'edit_post' post_id=post.id %}">
-            <button class="btn btn-sm text-primary" ">Edit</button>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    <p class=" card-text">{{ post.content }}</p>
+            <button id=" edit-post-btn-{{ post.id }}" class="btn btn-sm text-primary" ">Edit</button>
+           </a>
+          <a href=" {% url 'save_post' post_id=post.id %}">
+              <button id="save-post-btn-{{ post.id }}" class="btn btn-sm text-primary d-none" ">Edit</button>
+           </a>
+          {% endif %}
+        </div>
+      </div>
+      <p id =" content-{{ post.content }}" class=" card-text">{{ post.content }}</p>
+                <textarea id="edit-box-{{ post.id }}" class="form-control d-none">{{ post.content }}</textarea>
 
         </div>
         <div class="card-footer border-top-0 bg-transparent">
@@ -102,9 +103,6 @@
       {% empty %}
       <p>Share somthing with your friends now!</p>
       {% endfor %}
-
-
-
     </div>
 
 
