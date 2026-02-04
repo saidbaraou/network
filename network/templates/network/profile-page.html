@@ -58,35 +58,57 @@
     </div>
   </div>
 
+  <h2 class="mt-5">{{user_profile}} Posts</h2>
+
   {% for post in posts %}
-  <h2 class="mt-5">{{ post.author.username }} Posts</h2>
 
 
   <div class="card mb-3 shadow-sm">
     <div class="card-body">
-      <h5 class="card-title">
-        <strong>{{ post.author.username }}</strong>
-      </h5>
-      <p class="card-text">{{ post.content }}</p>
-      <p class="card-subtitle text-muted" style="font-size: 0.8rem;">
-        {{ post.timestamp|naturaltime }}
-      </p>
+
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <div>
+          <h5 class="card-title">
+            <a href="{% url 'profile' username=post.author.username %}">
+              <strong>{{post.author.username}}</strong></a>
+          </h5>
+        </div>
+        <div>
+          {% if user == post.author %}
+          <a href="{% url 'edit_post' post_id=post.id %}">
+            <button class="btn btn-sm text-primary" ">Edit</button>
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <p class=" card-text">{{ post.content }}</p>
+
+        </div>
+        <div class="card-footer border-top-0 bg-transparent">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <button class="btn btn-sm btn-outline-primary">Like</button>
+              <span class="text-muted ml-2">0 likes</span>
+            </div>
+            <div>
+
+              <span class="card-subtitle text-muted" style="font-size: 0.8rem;">
+                {{ post.timestamp|naturaltime }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <p>Share somthing with your friends now!</p>
+      {% endfor %}
+
+
+
     </div>
-    <div class="card-footer bg-transparent">
-      <button class="btn btn-sm btn-outline-primary">Like</button>
-      <span class="text-muted ml-2">0 likes</span>
-    </div>
+
+
+
   </div>
-  {% empty %}
-  <p>Share somthing with your friends now!</p>
-  {% endfor %}
 
-
-
-</div>
-
-
-
-</div>
-
-{% endblock %}
+  {% endblock %}
