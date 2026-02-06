@@ -72,17 +72,15 @@
         </div>
         <div>
           {% if user == post.author %}
-
-          <button id=" edit-post-btn-{{ post.id }}" class="btn btn-sm text-primary"
+          <button id="edit-btn-{{ post.id }}" class="btn btn-sm text-primary"
             onclick="edit_post('{{post.id}}')">Edit</button>
 
-          <button id="save-post-btn-{{ post.id }}" class="btn btn-sm text-primary d-none"
-            onclick="save_post('{{post.id}}')">Edit</button>
-
+          <button id="save-btn-{{ post.id }}" class="btn btn-sm text-primary d-none"
+            onclick="save_post('{{post.id}}')">Save</button>
           {% endif %}
         </div>
       </div>
-      <p id=" content-{{ post.content }}" class=" card-text">{{ post.content }}</p>
+      <p id="content-{{ post.id }}" class=" card-text">{{ post.content }}</p>
       <textarea id="edit-box-{{ post.id }}" class="form-control d-none">{{ post.content }}</textarea>
 
     </div>

@@ -1,6 +1,7 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.http import HttpResponse, HttpResponseRedirect
+import json
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -126,32 +127,24 @@ def following_view(request):
         "posts": posts
     })
 
-@login_required
-def edit_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-
-    if request.method == "POST":
-        new_content = request.Post.get("content")
-        if new_content:
-            post.content = new_content
-            post.save()
-            return redirect('index')
-        else:
-            return HttpResponse("Content cannot be empty.", status=400)
-    else:
-        return HttpResponse("Invalid request method.", status=405)
     
 @login_required
 def save_post(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
+   
+    if request.method == "PUT":
+        post = get_object_or_404(Post, pk=post_id)
 
-    if request.method == "POST":
-        new_content = request.POST.get("content")
+        if post.author != request.user:
+            return HttpResponse("Unauthorized", status=401)
+        
+        data = json.loads(request.body)
+        new_content = data.get("content")
+
         if new_content:
             post.content = new_content
             post.save()
-            return redirect('index')
-        else:
-            return HttpResponse("Content cannot be empty.", status=400)
-    else:
-        return HttpResponse("Invalid request method.", status=405)
+            return JsonResponse({"message": "Post updated successfully."}, status=200)
+        
+        return JsonResponse({"error": "Content cannot be empty"}, status=400)
+    
+    return JsonResponse({"error": "Invalid method"}, status=405)
