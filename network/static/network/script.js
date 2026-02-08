@@ -42,3 +42,23 @@ function save_post(post_id) {
       }
     });
 }
+
+function toggle_like(post_id) {
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  const likeBtn = document.querySelector(`#like-btn-${post_id}`);
+
+  fetch(`/toggle_like/${post_id}`, {
+    method: 'POST',
+    headers: {
+      'X-CSRFToken': csrftoken,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.liked) {
+        likeBtn.innerText = `Unlike (${data.likes_count})`;
+      } else {
+        likeBtn.innerText = `Like (${data.likes_count})`;
+      }
+    });
+}
