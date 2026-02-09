@@ -148,3 +148,22 @@ def save_post(request, post_id):
         return JsonResponse({"error": "Content cannot be empty"}, status=400)
     
     return JsonResponse({"error": "Invalid method"}, status=405)
+
+@login_required
+def toggle_like(request, post_id):
+    if request.method == "POST":
+        post = get_object_or_404(Post, pk=post_id)
+
+        if request.user in post.likes.all():
+            post.likes.remove(request.user)
+            liked = False
+        else:
+            post.likes.add(request.user)
+            liked = True
+
+        return JsonResponse({
+            "liked": liked,
+            "like_count": post.likes.count()
+        }, status=200)
+
+    return JsonResponse({"error": "Invalid method"}, status=405)
