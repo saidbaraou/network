@@ -3,6 +3,7 @@ from django.db import IntegrityError
 import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator
@@ -150,6 +151,7 @@ def save_post(request, post_id):
     return JsonResponse({"error": "Invalid method"}, status=405)
 
 @login_required
+@require_POST
 def toggle_like(request, post_id):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=post_id)
