@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from django.core.paginator import Paginator
 
-from .models import User, Post
+from .models import User, Post, Like
 
 
 
@@ -153,17 +153,22 @@ def save_post(request, post_id):
 def toggle_like(request, post_id):
     if request.method == "POST":
         post = get_object_or_404(Post, pk=post_id)
-
-        if request.user in post.likes.all():
-            post.likes.remove(request.user)
-            liked = False
+        # get_or_create handles the "only like once" logic
+        like, created = Like.objects.get_or_create(user=request.user, post=post)
+        
+        if not created:
+            # If it already existed, flip the current boolean state
+            like.liked = not like.liked
         else:
-            post.likes.add(request.user)
-            liked = True
+            # If it's a brand new row, set it to True
+            like.liked = True
+        
+        like.save()
+
+        # Count only the likes where 'liked' is True
+        likes_count = post.likes.filter(liked=True).count()
 
         return JsonResponse({
-            "liked": liked,
-            "like_count": post.likes.count()
-        }, status=200)
-
-    return JsonResponse({"error": "Invalid method"}, status=405)
+            "liked": like.liked,
+            "likes_count": likes_count
+        })
