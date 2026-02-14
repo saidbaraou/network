@@ -53,7 +53,12 @@ function toggle_like(post_id) {
       'X-CSRFToken': csrftoken,
     },
   })
-    .then((response) => response.json())
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
     .then((data) => {
       if (data.liked) {
         likeBtn.innerText = `Unlike (${data.likes_count})`;
