@@ -61,10 +61,10 @@ function toggle_like(post_id) {
     })
     .then((data) => {
       if (data.liked) {
-        likeBtn.innerText = `Unlike (${data.likes_count})`;
+        likeBtn.innerText = `Unlike`;
         likeBtn.classList.add('btn-danger');
       } else {
-        likeBtn.innerText = `Like (${data.likes_count})`;
+        likeBtn.innerText = `Like`;
         likeBtn.classList.remove('btn-danger');
       }
     })
