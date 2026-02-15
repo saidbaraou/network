@@ -62,10 +62,11 @@ function toggle_like(post_id) {
     .then((data) => {
       if (data.liked) {
         likeBtn.innerText = `Unlike`;
-        likeBtn.classList.add('btn-danger');
+        likeBtn.classList.add('text-white');
+        likeBtn.classList.add('btn-secondary');
       } else {
         likeBtn.innerText = `Like`;
-        likeBtn.classList.remove('btn-danger');
+        likeBtn.classList.remove('btn-secondary');
       }
     })
     .catch((error) => {
