@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.db.models import Exists, OuterRef
 import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,7 +14,17 @@ from .models import User, Post, Like
 
 
 def index(request):
-    posts = Post.objects.all().order_by("-timestamp")
+    user_like = Like.objects.filter(
+        post=OuterRef('pk'),
+        user=request.user if request.user.is_authenticated else None
+        liked=True
+    )
+
+    posts = Post.objects.all().annotate(
+        user_has_liked=Exists(user_like)
+        total_likes=Count('likes', filter=Q(likes__liked=True))
+    ).order_by("-timestamp")
+    
     
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
