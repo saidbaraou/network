@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
-from django.db.models import Exists, OuterRef
+from django.db.models import Exists, OuterRef, Count, Q
 import json
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -16,12 +16,12 @@ from .models import User, Post, Like
 def index(request):
     user_like = Like.objects.filter(
         post=OuterRef('pk'),
-        user=request.user if request.user.is_authenticated else None
+        user=request.user if request.user.is_authenticated else None,
         liked=True
     )
 
     posts = Post.objects.all().annotate(
-        user_has_liked=Exists(user_like)
+        user_has_liked=Exists(user_like),
         total_likes=Count('likes', filter=Q(likes__liked=True))
     ).order_by("-timestamp")
     
@@ -101,8 +101,20 @@ def post_view(request):
     return redirect(reverse("index"))
 
 def profile_view(request, username):
+
+    user_like = Like.objects.filter(
+        post=OuterRef('pk'),
+        user=request.user if request.user.is_authenticated else None,
+        liked=True
+    )
+
     user_profile = get_object_or_404(User, username=username)
-    posts = Post.objects.filter(author=request.user).order_by("-timestamp")
+    posts = Post.objects.filter(author=request.user).annotate(
+        user_has_liked=Exists(user_like),
+        total_likes=Count('likes', filter=Q(likes__liked=True))
+    ).order_by("-timestamp")
+
+    # posts = Post.objects.filter(author=request.user).order_by("-timestamp")
 
     is_following = False
     if request.user.is_authenticated:

@@ -1,6 +1,9 @@
 {% extends "network/layout.html" %}
 {% load humanize %}
 
+{% load static %}
+{% csrf_token %}
+
 {% block title %}All Posts - Social Network{% endblock %}
 
 {% block body %}
@@ -58,7 +61,7 @@
     </div>
   </div>
 
-  <h2 class="mt-5">{{user_profile}} Posts</h2>
+  <h2 class="mt-5">Your Posts</h2>
 
   {% for post in posts %}
   <div id="post-container-{{ post.id }}" class="card mb-3 shadow-sm">
@@ -87,8 +90,18 @@
     <div class="card-footer border-top-0 bg-transparent">
       <div class="d-flex justify-content-between align-items-center">
         <div>
-          <button id="like-btn-{{ post.id }}" class="btn btn-sm btn-outline-primary">Like</button>
-          <span class="text-muted ml-2">0 likes</span>
+          {% if user.is_authenticated %}
+          <button id="like-btn-{{ post.id }}" class="btn btn-sm btn-outline-primary"
+            onclick="toggle_like('{{post.id}}')">
+            {% if post.user_has_liked %}
+            Unlike
+            {% else %}
+            Like
+            {% endif %}
+          </button>
+          {% endif %}
+          <span class="text-muted ml-2">{{post.total_likes}}
+            {% if post.total_likes <= 1 %} like {% else %} likes {% endif %} </span>
         </div>
         <div>
 

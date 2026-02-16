@@ -75,12 +75,18 @@
                         <div>
                             {% if user.is_authenticated %}
                             <button id="like-btn-{{ post.id }}" class="btn btn-sm btn-outline-primary"
-                                onclick="toggle_like('{{post.id}}')">Like</button>
+                                onclick="toggle_like('{{post.id}}')">
+                                {% if post.user_has_liked %}
+                                Unlike
+                                {% else %}
+                                Like
+                                {% endif %}
+                            </button>
                             {% endif %}
-                            <span class="text-muted ml-2">{{post.likes_count}} likes</span>
+                            <span class="text-muted ml-2">{{post.total_likes}}
+                                {% if post.total_likes <= 1 %} like {% else %} likes {% endif %} </span>
                         </div>
                         <div>
-
                             <span class="card-subtitle text-muted" style="font-size: 0.8rem;">
                                 {{ post.timestamp|naturaltime }}
                             </span>
